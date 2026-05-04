@@ -18,13 +18,14 @@
 
         <div class="actions">
             <a class="btn" href="/profile">Profile</a>
+            <button class="dark-toggle" onclick="toggleDarkMode()">Dark Mode</button>
             <a class="btn secondary" href="/logout">Logout</a>
         </div>
     </div>
 
-{% for category, message in get_flashed_messages(with_categories=true) %}
-    <p class="{{ category }}">{{ message }}</p>
-{% endfor %}
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+        <p class="{{ category }}">{{ message }}</p>
+    {% endfor %}
 
     <div class="stats-grid">
         <div class="summary-card">
@@ -99,6 +100,7 @@
 
     <form class="filter-box" method="GET" action="/dashboard">
         <input type="text" name="search" placeholder="Search title or note" value="{{ search or '' }}">
+
         <input type="date" name="start_date" value="{{ start_date or '' }}">
         <input type="date" name="end_date" value="{{ end_date or '' }}">
 
@@ -110,6 +112,26 @@
                     {{ c['category'] }}
                 </option>
             {% endfor %}
+        </select>
+
+        <select name="payment_method">
+            <option value="">All Payment Methods</option>
+            <option value="Cash" {% if selected_payment_method == "Cash" %}selected{% endif %}>Cash</option>
+            <option value="Credit Card" {% if selected_payment_method == "Credit Card" %}selected{% endif %}>Credit Card</option>
+            <option value="Debit Card" {% if selected_payment_method == "Debit Card" %}selected{% endif %}>Debit Card</option>
+            <option value="Bank Transfer" {% if selected_payment_method == "Bank Transfer" %}selected{% endif %}>Bank Transfer</option>
+        </select>
+
+        <select name="status">
+            <option value="">All Statuses</option>
+            <option value="Paid" {% if selected_status == "Paid" %}selected{% endif %}>Paid</option>
+            <option value="Pending" {% if selected_status == "Pending" %}selected{% endif %}>Pending</option>
+        </select>
+
+        <select name="recurring">
+            <option value="">All Recurring</option>
+            <option value="yes" {% if selected_recurring == "yes" %}selected{% endif %}>Recurring Only</option>
+            <option value="no" {% if selected_recurring == "no" %}selected{% endif %}>Non-recurring Only</option>
         </select>
 
         <button type="submit">Search / Filter</button>
@@ -198,5 +220,6 @@ new Chart(ctx, {
 });
 </script>
 
+<script src="/static/script.js"></script>
 </body>
 </html>

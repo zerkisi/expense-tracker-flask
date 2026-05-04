@@ -139,6 +139,9 @@ def dashboard():
     search = request.args.get("search")
     start_date = request.args.get("start_date")
     end_date = request.args.get("end_date")
+    payment_method = request.args.get("payment_method")
+    status = request.args.get("status")
+    recurring = request.args.get("recurring")
 
     db = get_db()
 
@@ -148,6 +151,20 @@ def dashboard():
     if category:
         query += " AND category = ?"
         params.append(category)
+
+    if payment_method:
+        query += " AND payment_method = ?"
+        params.append(payment_method)
+
+    if status:
+        query += " AND status = ?"
+        params.append(status)
+
+    if recurring == "yes":
+        query += " AND is_recurring = 1"
+
+    if recurring == "no":
+        query += " AND is_recurring = 0"
 
     if search:
         query += " AND (title LIKE ? OR note LIKE ?)"
@@ -163,6 +180,7 @@ def dashboard():
         params.append(end_date)
 
     query += " ORDER BY expense_date DESC"
+
     expenses = db.execute(query, params).fetchall()
 
     total = calculate_total(expenses)
@@ -203,6 +221,9 @@ def dashboard():
         over_budget=over_budget,
         categories=categories,
         selected_category=category,
+        selected_payment_method=payment_method,
+        selected_status=status,
+        selected_recurring=recurring,
         search=search,
         start_date=start_date,
         end_date=end_date,
@@ -289,6 +310,7 @@ def profile():
         average_expense=average_expense,
     )
 
+
 @app.route("/add", methods=["GET", "POST"])
 def add_expense():
     if "user_id" not in session:
@@ -313,7 +335,7 @@ def add_expense():
         db = get_db()
         db.execute(
             """
-            INSERT INTO expenses 
+            INSERT INTO expenses
             (user_id, title, amount, category, expense_date, payment_method, status, is_recurring, note)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
@@ -372,7 +394,7 @@ def edit_expense(expense_id):
         db.execute(
             """
             UPDATE expenses
-            SET title = ?, amount = ?, category = ?, expense_date = ?, 
+            SET title = ?, amount = ?, category = ?, expense_date = ?,
                 payment_method = ?, status = ?, is_recurring = ?, note = ?
             WHERE id = ? AND user_id = ?
             """,
