@@ -5,6 +5,8 @@ from logic import (
     count_expenses,
     calculate_category_totals,
     find_highest_expense,
+    calculate_remaining_budget,
+    is_over_budget,
 )
 
 
@@ -73,3 +75,15 @@ def test_highest_expense():
 
     assert result["title"] == "Shoes"
     assert result["amount"] == 500
+
+
+def test_remaining_budget():
+    assert calculate_remaining_budget(1000, 350) == 650
+
+
+def test_over_budget_true():
+    assert is_over_budget(1000, 1200) == True
+
+
+def test_over_budget_false():
+    assert is_over_budget(1000, 800) == False

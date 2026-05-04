@@ -10,6 +10,8 @@ from logic import (
     count_expenses,
     calculate_category_totals,
     find_highest_expense,
+    calculate_remaining_budget,
+    is_over_budget,
 )
 
 app = Flask(__name__)
@@ -50,8 +52,8 @@ def register():
 
         try:
             db.execute(
-                "INSERT INTO users (username, password) VALUES (?, ?)",
-                (username, hashed_password),
+                "INSERT INTO users (username, password, monthly_budget) VALUES (?, ?, ?)",
+                (username, hashed_password, 0),
             )
             db.commit()
         except:
@@ -127,6 +129,15 @@ def dashboard():
     category_totals = calculate_category_totals(expenses)
     highest_expense = find_highest_expense(expenses)
 
+    user = db.execute(
+        "SELECT monthly_budget FROM users WHERE id = ?",
+        (session["user_id"],),
+    ).fetchone()
+
+    monthly_budget = user["monthly_budget"] if user else 0
+    remaining_budget = calculate_remaining_budget(monthly_budget, total)
+    over_budget = is_over_budget(monthly_budget, total)
+
     categories = db.execute(
         "SELECT DISTINCT category FROM expenses WHERE user_id = ?",
         (session["user_id"],),
@@ -140,10 +151,40 @@ def dashboard():
         expense_count=expense_count,
         category_totals=category_totals,
         highest_expense=highest_expense,
+        monthly_budget=monthly_budget,
+        remaining_budget=remaining_budget,
+        over_budget=over_budget,
         categories=categories,
         selected_category=category,
         search=search,
     )
+
+
+@app.route("/budget", methods=["POST"])
+def update_budget():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    monthly_budget = request.form["monthly_budget"]
+
+    try:
+        monthly_budget = float(monthly_budget)
+        if monthly_budget < 0:
+            flash("Budget cannot be negative.")
+            return redirect(url_for("dashboard"))
+    except:
+        flash("Invalid budget amount.")
+        return redirect(url_for("dashboard"))
+
+    db = get_db()
+    db.execute(
+        "UPDATE users SET monthly_budget = ? WHERE id = ?",
+        (monthly_budget, session["user_id"]),
+    )
+    db.commit()
+
+    flash("Monthly budget updated.")
+    return redirect(url_for("dashboard"))
 
 
 @app.route("/add", methods=["GET", "POST"])

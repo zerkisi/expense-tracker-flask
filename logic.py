@@ -58,3 +58,13 @@ def find_highest_expense(expenses):
             highest = exp
 
     return highest
+
+
+def calculate_remaining_budget(monthly_budget, total_spending):
+    return monthly_budget - total_spending
+
+
+def is_over_budget(monthly_budget, total_spending):
+    if monthly_budget <= 0:
+        return False
+    return total_spending > monthly_budget
