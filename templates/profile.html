@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile | FinTrack</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="app-body">
+
+<div class="container">
+    <h1>Profile</h1>
+    <p class="subtitle">Manage your account information.</p>
+
+    {% for message in get_flashed_messages() %}
+        <p class="error">{{ message }}</p>
+    {% endfor %}
+
+    <div class="category-box">
+        <p><strong>Username:</strong> {{ session["username"] }}</p>
+        <p><strong>Monthly Budget:</strong> {{ "%.2f"|format(user["monthly_budget"]) }} TL</p>
+    </div>
+
+    <h3>Change Password</h3>
+
+    <form method="POST">
+        <label>Old Password</label>
+        <input type="password" name="old_password" placeholder="Old password" required>
+
+        <label>New Password</label>
+        <input type="password" name="new_password" placeholder="New password" required>
+
+        <button type="submit">Update Password</button>
+    </form>
+
+    <p class="switch"><a href="/dashboard">Back to Dashboard</a></p>
+</div>
+
+</body>
+</html>

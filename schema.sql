@@ -15,6 +15,9 @@ CREATE TABLE expenses (
     amount REAL NOT NULL,
     category TEXT NOT NULL,
     expense_date TEXT NOT NULL,
+    payment_method TEXT,
+    status TEXT,
+    is_recurring INTEGER DEFAULT 0,
     note TEXT,
     FOREIGN KEY (user_id) REFERENCES users (id)
 );

@@ -17,7 +17,6 @@ from logic import (
 
 app = Flask(__name__)
 app.secret_key = "expense-tracker-secret-key"
-
 app.teardown_appcontext(close_db)
 
 
@@ -207,6 +206,42 @@ def update_budget():
     return redirect(url_for("dashboard"))
 
 
+@app.route("/profile", methods=["GET", "POST"])
+def profile():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    db = get_db()
+
+    user = db.execute(
+        "SELECT * FROM users WHERE id = ?",
+        (session["user_id"],),
+    ).fetchone()
+
+    if request.method == "POST":
+        old_password = request.form["old_password"]
+        new_password = request.form["new_password"]
+
+        if len(new_password) < 4:
+            flash("New password must be at least 4 characters.")
+            return redirect(url_for("profile"))
+
+        if not check_password_hash(user["password"], old_password):
+            flash("Old password is incorrect.")
+            return redirect(url_for("profile"))
+
+        db.execute(
+            "UPDATE users SET password = ? WHERE id = ?",
+            (generate_password_hash(new_password), session["user_id"]),
+        )
+        db.commit()
+
+        flash("Password updated successfully.")
+        return redirect(url_for("profile"))
+
+    return render_template("profile.html", user=user)
+
+
 @app.route("/add", methods=["GET", "POST"])
 def add_expense():
     if "user_id" not in session:
@@ -217,6 +252,9 @@ def add_expense():
         amount = request.form["amount"]
         category = request.form["category"]
         expense_date = request.form["expense_date"]
+        payment_method = request.form["payment_method"]
+        status = request.form["status"]
+        is_recurring = 1 if "is_recurring" in request.form else 0
         note = request.form["note"]
 
         valid, message = validate_expense(title, amount, category)
@@ -228,10 +266,21 @@ def add_expense():
         db = get_db()
         db.execute(
             """
-            INSERT INTO expenses (user_id, title, amount, category, expense_date, note)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO expenses 
+            (user_id, title, amount, category, expense_date, payment_method, status, is_recurring, note)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
-            (session["user_id"], title, float(amount), category, expense_date, note),
+            (
+                session["user_id"],
+                title,
+                float(amount),
+                category,
+                expense_date,
+                payment_method,
+                status,
+                is_recurring,
+                note,
+            ),
         )
         db.commit()
 
@@ -261,6 +310,9 @@ def edit_expense(expense_id):
         amount = request.form["amount"]
         category = request.form["category"]
         expense_date = request.form["expense_date"]
+        payment_method = request.form["payment_method"]
+        status = request.form["status"]
+        is_recurring = 1 if "is_recurring" in request.form else 0
         note = request.form["note"]
 
         valid, message = validate_expense(title, amount, category)
@@ -272,10 +324,22 @@ def edit_expense(expense_id):
         db.execute(
             """
             UPDATE expenses
-            SET title = ?, amount = ?, category = ?, expense_date = ?, note = ?
+            SET title = ?, amount = ?, category = ?, expense_date = ?, 
+                payment_method = ?, status = ?, is_recurring = ?, note = ?
             WHERE id = ? AND user_id = ?
             """,
-            (title, float(amount), category, expense_date, note, expense_id, session["user_id"]),
+            (
+                title,
+                float(amount),
+                category,
+                expense_date,
+                payment_method,
+                status,
+                is_recurring,
+                note,
+                expense_id,
+                session["user_id"],
+            ),
         )
         db.commit()
 
@@ -307,7 +371,7 @@ def export_expenses():
     db = get_db()
     expenses = db.execute(
         """
-        SELECT title, amount, category, expense_date, note
+        SELECT title, amount, category, expense_date, payment_method, status, is_recurring, note
         FROM expenses
         WHERE user_id = ?
         ORDER BY expense_date DESC
@@ -318,7 +382,16 @@ def export_expenses():
     output = io.StringIO()
     writer = csv.writer(output)
 
-    writer.writerow(["Title", "Amount", "Category", "Date", "Note"])
+    writer.writerow([
+        "Title",
+        "Amount",
+        "Category",
+        "Date",
+        "Payment Method",
+        "Status",
+        "Recurring",
+        "Note",
+    ])
 
     for expense in expenses:
         writer.writerow([
@@ -326,6 +399,9 @@ def export_expenses():
             expense["amount"],
             expense["category"],
             expense["expense_date"],
+            expense["payment_method"],
+            expense["status"],
+            "Yes" if expense["is_recurring"] else "No",
             expense["note"],
         ])
 

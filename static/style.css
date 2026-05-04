@@ -799,3 +799,18 @@ select:focus {
         grid-template-columns: 1fr !important;
     }
 }
+
+.checkbox-label {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.checkbox-label input {
+    width: 16px !important;
+    height: 16px !important;
+    margin: 0 !important;
+}
