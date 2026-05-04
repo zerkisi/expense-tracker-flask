@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from database import get_db, close_db, init_db
 from logic import (
     validate_expense,
+    validate_password,
     calculate_total,
     calculate_average,
     count_expenses,
@@ -43,8 +44,9 @@ def register():
             flash("Username and password are required.")
             return redirect(url_for("register"))
 
-        if len(password) < 4:
-            flash("Password must be at least 4 characters.")
+        valid, msg = validate_password(password)
+        if not valid:
+            flash(msg)
             return redirect(url_for("register"))
 
         db = get_db()
@@ -89,6 +91,39 @@ def login():
         return redirect(url_for("dashboard"))
 
     return render_template("login.html")
+
+
+@app.route("/forgot", methods=["GET", "POST"])
+def forgot():
+    if request.method == "POST":
+        username = request.form["username"]
+        new_password = request.form["new_password"]
+
+        db = get_db()
+        user = db.execute(
+            "SELECT * FROM users WHERE username = ?",
+            (username,),
+        ).fetchone()
+
+        if user is None:
+            flash("User not found.")
+            return redirect(url_for("forgot"))
+
+        valid, msg = validate_password(new_password)
+        if not valid:
+            flash(msg)
+            return redirect(url_for("forgot"))
+
+        db.execute(
+            "UPDATE users SET password = ? WHERE username = ?",
+            (generate_password_hash(new_password), username),
+        )
+        db.commit()
+
+        flash("Password reset successful. Please login.")
+        return redirect(url_for("login"))
+
+    return render_template("forgot.html")
 
 
 @app.route("/logout")
@@ -222,8 +257,9 @@ def profile():
         old_password = request.form["old_password"]
         new_password = request.form["new_password"]
 
-        if len(new_password) < 4:
-            flash("New password must be at least 4 characters.")
+        valid, msg = validate_password(new_password)
+        if not valid:
+            flash(msg)
             return redirect(url_for("profile"))
 
         if not check_password_hash(user["password"], old_password):

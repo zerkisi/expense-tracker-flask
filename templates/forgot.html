@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forgot Password | FinTrack</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="app-body">
+
+<div class="container">
+    <h1>Reset Password</h1>
+    <p class="subtitle">Enter your username and new strong password.</p>
+
+    {% for message in get_flashed_messages() %}
+        <p class="error">{{ message }}</p>
+    {% endfor %}
+
+    <form method="POST">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Username" required>
+
+        <label>New Password</label>
+        <input type="password" name="new_password" placeholder="New Password" required>
+
+        <button type="submit">Reset Password</button>
+    </form>
+
+    <p class="switch"><a href="/login">Back to Login</a></p>
+</div>
+
+</body>
+</html>

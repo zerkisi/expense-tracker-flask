@@ -86,3 +86,23 @@ def is_over_budget(monthly_budget, total_spending):
     if monthly_budget <= 0:
         return False
     return total_spending > monthly_budget
+
+import re
+
+def validate_password(password):
+    if len(password) < 8:
+        return False, "Password must be at least 8 characters"
+
+    if not re.search(r"[A-Z]", password):
+        return False, "Must include uppercase letter"
+
+    if not re.search(r"[a-z]", password):
+        return False, "Must include lowercase letter"
+
+    if not re.search(r"[0-9]", password):
+        return False, "Must include number"
+
+    if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+        return False, "Must include special character"
+
+    return True, "Valid"
