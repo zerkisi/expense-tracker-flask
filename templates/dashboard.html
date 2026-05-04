@@ -22,9 +22,9 @@
         </div>
     </div>
 
-    {% for message in get_flashed_messages() %}
-        <p class="error">{{ message }}</p>
-    {% endfor %}
+{% for category, message in get_flashed_messages(with_categories=true) %}
+    <p class="{{ category }}">{{ message }}</p>
+{% endfor %}
 
     <div class="stats-grid">
         <div class="summary-card">

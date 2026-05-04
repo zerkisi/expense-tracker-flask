@@ -21,9 +21,11 @@
         <h1>Login to FinTrack</h1>
         <p class="auth-subtitle">Manage your expenses in one simple dashboard.</p>
 
-        {% for message in get_flashed_messages() %}
-            <p class="error">{{ message }}</p>
-        {% endfor %}
+{% for category, message in get_flashed_messages(with_categories=true) %}
+    <p class="{{ category }}">{{ message }}</p>
+{% endfor %}
+
+
 
         <form method="POST">
             <label>Username</label>

@@ -10,9 +10,9 @@
     <h1>Profile</h1>
     <p class="subtitle">Manage your account information.</p>
 
-    {% for message in get_flashed_messages() %}
-        <p class="error">{{ message }}</p>
-    {% endfor %}
+{% for category, message in get_flashed_messages(with_categories=true) %}
+    <p class="{{ category }}">{{ message }}</p>
+{% endfor %}
 
     <div class="category-box">
         <p><strong>Username:</strong> {{ session["username"] }}</p>

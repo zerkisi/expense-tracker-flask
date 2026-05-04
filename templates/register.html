@@ -20,9 +20,9 @@
         <h1>Create FinTrack account</h1>
         <p class="auth-subtitle">Use a strong password to protect your account.</p>
 
-        {% for message in get_flashed_messages() %}
-            <p class="error">{{ message }}</p>
-        {% endfor %}
+{% for category, message in get_flashed_messages(with_categories=true) %}
+    <p class="{{ category }}">{{ message }}</p>
+{% endfor %}
 
         <form method="POST">
             <label>Username</label>

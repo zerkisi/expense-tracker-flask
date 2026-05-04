@@ -39,12 +39,12 @@ def register():
         password = request.form["password"]
 
         if not username or not password:
-            flash("Username and password are required.")
+            flash("Username and password are required.", "error")
             return redirect(url_for("register"))
 
         valid, msg = validate_password(password)
         if not valid:
-            flash(msg)
+            flash(msg, "error")
             return redirect(url_for("register"))
 
         db = get_db()
@@ -57,10 +57,10 @@ def register():
             )
             db.commit()
         except:
-            flash("Username already exists.")
+            flash("Username already exists.", "error")
             return redirect(url_for("register"))
 
-        flash("Registration successful. Please login.")
+        flash("Registration successful. Please login.", "success")
         return redirect(url_for("login"))
 
     return render_template("register.html")
@@ -79,7 +79,7 @@ def login():
         ).fetchone()
 
         if user is None or not check_password_hash(user["password"], password):
-            flash("Invalid username or password.")
+            flash("Invalid username or password.", "error")
             return redirect(url_for("login"))
 
         session.clear()
@@ -104,12 +104,12 @@ def forgot():
         ).fetchone()
 
         if user is None:
-            flash("User not found.")
+            flash("User not found.", "error")
             return redirect(url_for("forgot"))
 
         valid, msg = validate_password(new_password)
         if not valid:
-            flash(msg)
+            flash(msg, "error")
             return redirect(url_for("forgot"))
 
         db.execute(
@@ -118,7 +118,7 @@ def forgot():
         )
         db.commit()
 
-        flash("Password reset successful. Please login.")
+        flash("Password reset successful. Please login.", "success")
         return redirect(url_for("login"))
 
     return render_template("forgot.html")
@@ -221,10 +221,10 @@ def update_budget():
     try:
         monthly_budget = float(monthly_budget)
         if monthly_budget < 0:
-            flash("Budget cannot be negative.")
+            flash("Budget cannot be negative.", "error")
             return redirect(url_for("dashboard"))
     except:
-        flash("Invalid budget amount.")
+        flash("Invalid budget amount.", "error")
         return redirect(url_for("dashboard"))
 
     db = get_db()
@@ -234,7 +234,7 @@ def update_budget():
     )
     db.commit()
 
-    flash("Monthly budget updated.")
+    flash("Monthly budget updated.", "success")
     return redirect(url_for("dashboard"))
 
 
@@ -255,11 +255,11 @@ def profile():
 
         valid, msg = validate_password(new_password)
         if not valid:
-            flash(msg)
+            flash(msg, "error")
             return redirect(url_for("profile"))
 
         if not check_password_hash(user["password"], old_password):
-            flash("Old password is incorrect.")
+            flash("Old password is incorrect.", "error")
             return redirect(url_for("profile"))
 
         db.execute(
@@ -268,7 +268,7 @@ def profile():
         )
         db.commit()
 
-        flash("Password updated successfully.")
+        flash("Password updated successfully.", "success")
         return redirect(url_for("profile"))
 
     return render_template("profile.html", user=user)
@@ -292,7 +292,7 @@ def add_expense():
         valid, message = validate_expense(title, amount, category)
 
         if not valid:
-            flash(message)
+            flash(message, "error")
             return redirect(url_for("add_expense"))
 
         db = get_db()
@@ -316,6 +316,7 @@ def add_expense():
         )
         db.commit()
 
+        flash("Expense added successfully.", "success")
         return redirect(url_for("dashboard"))
 
     return render_template("add_expense.html")
@@ -334,7 +335,7 @@ def edit_expense(expense_id):
     ).fetchone()
 
     if expense is None:
-        flash("Expense not found.")
+        flash("Expense not found.", "error")
         return redirect(url_for("dashboard"))
 
     if request.method == "POST":
@@ -350,7 +351,7 @@ def edit_expense(expense_id):
         valid, message = validate_expense(title, amount, category)
 
         if not valid:
-            flash(message)
+            flash(message, "error")
             return redirect(url_for("edit_expense", expense_id=expense_id))
 
         db.execute(
@@ -375,6 +376,7 @@ def edit_expense(expense_id):
         )
         db.commit()
 
+        flash("Expense updated successfully.", "success")
         return redirect(url_for("dashboard"))
 
     return render_template("edit_expense.html", expense=expense)
@@ -392,6 +394,7 @@ def delete_expense(expense_id):
     )
     db.commit()
 
+    flash("Expense deleted successfully.", "success")
     return redirect(url_for("dashboard"))
 
 
