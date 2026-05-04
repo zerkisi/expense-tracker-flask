@@ -244,10 +244,20 @@ def profile():
         return redirect(url_for("login"))
 
     db = get_db()
+
     user = db.execute(
         "SELECT * FROM users WHERE id = ?",
         (session["user_id"],),
     ).fetchone()
+
+    expenses = db.execute(
+        "SELECT * FROM expenses WHERE user_id = ?",
+        (session["user_id"],),
+    ).fetchall()
+
+    total_spending = calculate_total(expenses)
+    expense_count = count_expenses(expenses)
+    average_expense = calculate_average(expenses)
 
     if request.method == "POST":
         old_password = request.form["old_password"]
@@ -271,8 +281,13 @@ def profile():
         flash("Password updated successfully.", "success")
         return redirect(url_for("profile"))
 
-    return render_template("profile.html", user=user)
-
+    return render_template(
+        "profile.html",
+        user=user,
+        total_spending=total_spending,
+        expense_count=expense_count,
+        average_expense=average_expense,
+    )
 
 @app.route("/add", methods=["GET", "POST"])
 def add_expense():
