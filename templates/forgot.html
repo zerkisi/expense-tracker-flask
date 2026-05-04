@@ -8,7 +8,7 @@
 
 <div class="container">
     <h1>Reset Password</h1>
-    <p class="subtitle">Enter your username and new strong password.</p>
+    <p class="subtitle">Enter your username and a new strong password.</p>
 
     {% for message in get_flashed_messages() %}
         <p class="error">{{ message }}</p>
@@ -19,7 +19,12 @@
         <input type="text" name="username" placeholder="Username" required>
 
         <label>New Password</label>
-        <input type="password" name="new_password" placeholder="New Password" required>
+        <input id="password" type="password" name="new_password" placeholder="Example: Test123!" required oninput="checkPasswordStrength()">
+
+        <div class="strength-box">
+            <div id="strength-bar"></div>
+        </div>
+        <p id="strength-text" class="strength-text">Password strength</p>
 
         <button type="submit">Reset Password</button>
     </form>
@@ -27,5 +32,6 @@
     <p class="switch"><a href="/login">Back to Login</a></p>
 </div>
 
+<script src="/static/script.js"></script>
 </body>
 </html>

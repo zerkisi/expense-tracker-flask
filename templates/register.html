@@ -9,15 +9,16 @@
 <header class="minimal-header">
     <div class="brand-name">FinTrack</div>
     <nav>
+        <a href="/">Home</a>
         <a href="/login">Login</a>
-        <a href="/register">Register</a>
+        <button class="dark-toggle" onclick="toggleDarkMode()">Dark Mode</button>
     </nav>
 </header>
 
 <main class="minimal-auth-main">
     <div class="minimal-auth-card">
         <h1>Create FinTrack account</h1>
-        <p class="auth-subtitle">Start tracking your personal spending securely.</p>
+        <p class="auth-subtitle">Use a strong password to protect your account.</p>
 
         {% for message in get_flashed_messages() %}
             <p class="error">{{ message }}</p>
@@ -28,7 +29,12 @@
             <input type="text" name="username" placeholder="Choose a username" required>
 
             <label>Password</label>
-            <input type="password" name="password" placeholder="Choose a password" required>
+            <input id="password" type="password" name="password" placeholder="Example: Test123!" required oninput="checkPasswordStrength()">
+
+            <div class="strength-box">
+                <div id="strength-bar"></div>
+            </div>
+            <p id="strength-text" class="strength-text">Password strength</p>
 
             <button type="submit" class="primary-action">Create Account</button>
         </form>
@@ -39,5 +45,6 @@
     </div>
 </main>
 
+<script src="/static/script.js"></script>
 </body>
 </html>

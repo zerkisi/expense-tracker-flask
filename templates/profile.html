@@ -26,7 +26,12 @@
         <input type="password" name="old_password" placeholder="Old password" required>
 
         <label>New Password</label>
-        <input type="password" name="new_password" placeholder="New password" required>
+        <input id="password" type="password" name="new_password" placeholder="Example: Test123!" required oninput="checkPasswordStrength()">
+
+        <div class="strength-box">
+            <div id="strength-bar"></div>
+        </div>
+        <p id="strength-text" class="strength-text">Password strength</p>
 
         <button type="submit">Update Password</button>
     </form>
@@ -34,5 +39,6 @@
     <p class="switch"><a href="/dashboard">Back to Dashboard</a></p>
 </div>
 
+<script src="/static/script.js"></script>
 </body>
 </html>

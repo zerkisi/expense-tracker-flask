@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FinTrack</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="landing-body">
+
+<header class="landing-nav">
+    <div class="brand-name">FinTrack</div>
+    <div>
+        <a href="/login">Login</a>
+        <a class="nav-btn" href="/register">Get Started</a>
+        <button class="dark-toggle" onclick="toggleDarkMode()">Dark Mode</button>
+    </div>
+</header>
+
+<section class="landing-hero">
+    <div class="landing-text">
+        <span class="badge">Smart Expense Management</span>
+        <h1>Track your money with clarity.</h1>
+        <p>
+            FinTrack is a multi-user finance dashboard for tracking expenses,
+            budgets, categories, payment methods, recurring payments, and reports.
+        </p>
+
+        <div class="landing-actions">
+            <a class="primary-link" href="/register">Start Free</a>
+            <a class="secondary-link" href="/login">Login</a>
+        </div>
+    </div>
+
+    <div class="landing-preview">
+        <div class="preview-top">
+            <span>Total Spending</span>
+            <strong>2,450 TL</strong>
+        </div>
+        <div class="preview-card">
+            <span>Food</span>
+            <b>850 TL</b>
+        </div>
+        <div class="preview-card">
+            <span>Transport</span>
+            <b>420 TL</b>
+        </div>
+        <div class="preview-card">
+            <span>Recurring</span>
+            <b>Netflix • Bills</b>
+        </div>
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="feature-card">
+        <h3>Multi-user</h3>
+        <p>Each user can only access their own expense data.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Analytics</h3>
+        <p>Charts, summaries, highest expense, and category insights.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Reports</h3>
+        <p>Export your expenses as a CSV report.</p>
+    </div>
+</section>
+
+<script src="/static/script.js"></script>
+</body>
+</html>

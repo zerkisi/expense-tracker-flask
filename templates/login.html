@@ -9,8 +9,10 @@
 <header class="minimal-header">
     <div class="brand-name">FinTrack</div>
     <nav>
+        <a href="/">Home</a>
         <a href="/login">Login</a>
         <a href="/register">Register</a>
+        <button class="dark-toggle" onclick="toggleDarkMode()">Dark Mode</button>
     </nav>
 </header>
 
@@ -33,14 +35,14 @@
             <button type="submit" class="primary-action">Login</button>
         </form>
 
-<p class="switch">
-    <a href="/forgot">Forgot Password?</a>
-</p>
+        <p class="switch"><a href="/forgot">Forgot Password?</a></p>
+
         <p class="auth-note">
             Don’t have an account? <a href="/register">Create account</a>
         </p>
     </div>
 </main>
 
+<script src="/static/script.js"></script>
 </body>
 </html>

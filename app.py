@@ -29,9 +29,7 @@ def init_db_command():
 
 @app.route("/")
 def index():
-    if "user_id" in session:
-        return redirect(url_for("dashboard"))
-    return redirect(url_for("login"))
+    return render_template("landing.html")
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -165,7 +163,6 @@ def dashboard():
         params.append(end_date)
 
     query += " ORDER BY expense_date DESC"
-
     expenses = db.execute(query, params).fetchall()
 
     total = calculate_total(expenses)
@@ -247,7 +244,6 @@ def profile():
         return redirect(url_for("login"))
 
     db = get_db()
-
     user = db.execute(
         "SELECT * FROM users WHERE id = ?",
         (session["user_id"],),

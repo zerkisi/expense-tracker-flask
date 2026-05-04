@@ -814,3 +814,235 @@ select:focus {
     height: 16px !important;
     margin: 0 !important;
 }
+
+/* FINAL PRODUCT FEATURES */
+
+.dark-toggle {
+    width: auto !important;
+    height: 38px !important;
+    padding: 0 14px !important;
+    margin: 0 0 0 12px !important;
+    border-radius: 8px !important;
+    font-size: 13px !important;
+}
+
+.dark-mode {
+    background: #0f172a !important;
+    color: #e5e7eb !important;
+}
+
+.dark-mode .minimal-auth-main,
+.dark-mode .app-body,
+.dark-mode.landing-body {
+    background: #0f172a !important;
+}
+
+.dark-mode .minimal-header,
+.dark-mode .landing-nav,
+.dark-mode .minimal-auth-card,
+.dark-mode .container,
+.dark-mode .topbar,
+.dark-mode .summary-card,
+.dark-mode .category-box,
+.dark-mode .table-card,
+.dark-mode .feature-card,
+.dark-mode .landing-preview {
+    background: #111827 !important;
+    color: #e5e7eb !important;
+    border-color: #334155 !important;
+}
+
+.dark-mode input,
+.dark-mode select {
+    background: #0f172a !important;
+    color: #e5e7eb !important;
+    border-color: #334155 !important;
+}
+
+.dark-mode p,
+.dark-mode label,
+.dark-mode .subtitle,
+.dark-mode .auth-subtitle,
+.dark-mode .brand p {
+    color: #cbd5e1 !important;
+}
+
+.strength-box {
+    width: 100%;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+#strength-bar {
+    height: 100%;
+    width: 0;
+    border-radius: 999px;
+    transition: 0.3s;
+}
+
+.strength-text {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
+}
+
+.landing-body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8fafc, #eef6ff);
+}
+
+.landing-nav {
+    height: 78px;
+    padding: 0 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    border-bottom: 1px solid var(--border);
+}
+
+.landing-nav a {
+    margin-left: 22px;
+    color: var(--dark);
+    font-weight: 700;
+}
+
+.nav-btn {
+    padding: 11px 18px;
+    border-radius: 10px;
+    background: var(--primary);
+    color: white !important;
+}
+
+.landing-hero {
+    max-width: 1180px;
+    margin: 70px auto;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 60px;
+    align-items: center;
+    padding: 0 30px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 9px 14px;
+    border-radius: 999px;
+    background: #dbeafe;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 13px;
+}
+
+.landing-text h1 {
+    font-size: 64px;
+    line-height: 1.05;
+    margin: 22px 0;
+    color: var(--dark);
+    letter-spacing: -2px;
+}
+
+.landing-text p {
+    font-size: 18px;
+    line-height: 1.8;
+    color: var(--muted);
+}
+
+.landing-actions {
+    margin-top: 30px;
+}
+
+.primary-link,
+.secondary-link {
+    display: inline-block;
+    padding: 14px 22px;
+    border-radius: 12px;
+    font-weight: 800;
+    margin-right: 12px;
+}
+
+.primary-link {
+    background: var(--primary);
+    color: white;
+}
+
+.secondary-link {
+    background: white;
+    color: var(--dark);
+    border: 1px solid var(--border);
+}
+
+.landing-preview {
+    padding: 28px;
+    border-radius: 28px;
+    background: white;
+    border: 1px solid var(--border);
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+}
+
+.preview-top {
+    padding: 22px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    margin-bottom: 16px;
+}
+
+.preview-top span,
+.preview-top strong {
+    display: block;
+}
+
+.preview-top strong {
+    font-size: 34px;
+    margin-top: 8px;
+}
+
+.preview-card {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.preview-card:last-child {
+    border-bottom: none;
+}
+
+.features-section {
+    max-width: 1180px;
+    margin: 40px auto 80px;
+    padding: 0 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.feature-card {
+    padding: 26px;
+    border-radius: 22px;
+    background: white;
+    border: 1px solid var(--border);
+}
+
+.feature-card h3 {
+    margin-top: 0;
+}
+
+@media (max-width: 900px) {
+    .landing-nav {
+        padding: 0 20px;
+    }
+
+    .landing-hero,
+    .features-section {
+        grid-template-columns: 1fr;
+    }
+
+    .landing-text h1 {
+        font-size: 42px;
+    }
+}
