@@ -755,3 +755,47 @@ select:focus {
 .minimal-auth-card h1 {
     color: var(--dark) !important;
 }
+
+.dashboard-insights {
+    display: grid !important;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 28px;
+    align-items: center;
+}
+
+.chart-panel {
+    border-left: 1px solid var(--border);
+    padding-left: 28px;
+}
+
+.chart-wrap {
+    width: 100%;
+    max-width: 320px;
+    height: 240px;
+    margin: 0 auto;
+}
+
+.filter-box {
+    grid-template-columns: 1.3fr 0.8fr 0.8fr 0.9fr 0.8fr !important;
+}
+
+@media (max-width: 900px) {
+    .dashboard-insights {
+        grid-template-columns: 1fr !important;
+    }
+
+    .chart-panel {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid var(--border);
+        padding-top: 20px;
+    }
+
+    .chart-wrap {
+        height: 220px;
+    }
+
+    .filter-box {
+        grid-template-columns: 1fr !important;
+    }
+}

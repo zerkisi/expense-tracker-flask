@@ -60,6 +60,24 @@ def find_highest_expense(expenses):
     return highest
 
 
+def find_top_category(category_totals):
+    if len(category_totals) == 0:
+        return None
+
+    top_category = None
+    top_amount = 0
+
+    for category, amount in category_totals.items():
+        if amount > top_amount:
+            top_category = category
+            top_amount = amount
+
+    return {
+        "category": top_category,
+        "amount": top_amount
+    }
+
+
 def calculate_remaining_budget(monthly_budget, total_spending):
     return monthly_budget - total_spending
 

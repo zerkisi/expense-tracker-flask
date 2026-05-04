@@ -10,6 +10,7 @@ from logic import (
     count_expenses,
     calculate_category_totals,
     find_highest_expense,
+    find_top_category,
     calculate_remaining_budget,
     is_over_budget,
 )
@@ -104,6 +105,8 @@ def dashboard():
 
     category = request.args.get("category")
     search = request.args.get("search")
+    start_date = request.args.get("start_date")
+    end_date = request.args.get("end_date")
 
     db = get_db()
 
@@ -119,6 +122,14 @@ def dashboard():
         params.append(f"%{search}%")
         params.append(f"%{search}%")
 
+    if start_date:
+        query += " AND expense_date >= ?"
+        params.append(start_date)
+
+    if end_date:
+        query += " AND expense_date <= ?"
+        params.append(end_date)
+
     query += " ORDER BY expense_date DESC"
 
     expenses = db.execute(query, params).fetchall()
@@ -128,6 +139,7 @@ def dashboard():
     expense_count = count_expenses(expenses)
     category_totals = calculate_category_totals(expenses)
     highest_expense = find_highest_expense(expenses)
+    top_category = find_top_category(category_totals)
 
     user = db.execute(
         "SELECT monthly_budget FROM users WHERE id = ?",
@@ -143,6 +155,9 @@ def dashboard():
         (session["user_id"],),
     ).fetchall()
 
+    chart_labels = list(category_totals.keys())
+    chart_values = list(category_totals.values())
+
     return render_template(
         "dashboard.html",
         expenses=expenses,
@@ -151,12 +166,17 @@ def dashboard():
         expense_count=expense_count,
         category_totals=category_totals,
         highest_expense=highest_expense,
+        top_category=top_category,
         monthly_budget=monthly_budget,
         remaining_budget=remaining_budget,
         over_budget=over_budget,
         categories=categories,
         selected_category=category,
         search=search,
+        start_date=start_date,
+        end_date=end_date,
+        chart_labels=chart_labels,
+        chart_values=chart_values,
     )
 
 
