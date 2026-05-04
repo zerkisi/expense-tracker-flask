@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from database import get_db, close_db, init_db
-from logic import validate_expense, calculate_total
+from logic import validate_expense, calculate_total, calculate_average, count_expenses, calculate_category_totals
 
 app = Flask(__name__)
 app.secret_key = "expense-tracker-secret-key"
@@ -88,21 +88,30 @@ def dashboard():
         return redirect(url_for("login"))
 
     category = request.args.get("category")
+    search = request.args.get("search")
 
     db = get_db()
 
+    query = "SELECT * FROM expenses WHERE user_id = ?"
+    params = [session["user_id"]]
+
     if category:
-        expenses = db.execute(
-            "SELECT * FROM expenses WHERE user_id = ? AND category = ? ORDER BY expense_date DESC",
-            (session["user_id"], category),
-        ).fetchall()
-    else:
-        expenses = db.execute(
-            "SELECT * FROM expenses WHERE user_id = ? ORDER BY expense_date DESC",
-            (session["user_id"],),
-        ).fetchall()
+        query += " AND category = ?"
+        params.append(category)
+
+    if search:
+        query += " AND (title LIKE ? OR note LIKE ?)"
+        params.append(f"%{search}%")
+        params.append(f"%{search}%")
+
+    query += " ORDER BY expense_date DESC"
+
+    expenses = db.execute(query, params).fetchall()
 
     total = calculate_total(expenses)
+    average = calculate_average(expenses)
+    expense_count = count_expenses(expenses)
+    category_totals = calculate_category_totals(expenses)
 
     categories = db.execute(
         "SELECT DISTINCT category FROM expenses WHERE user_id = ?",
@@ -113,8 +122,12 @@ def dashboard():
         "dashboard.html",
         expenses=expenses,
         total=total,
+        average=average,
+        expense_count=expense_count,
+        category_totals=category_totals,
         categories=categories,
         selected_category=category,
+        search=search,
     )
 
 

@@ -147,3 +147,35 @@ tr:hover {
     background: #f9fafb;
     border-radius: 14px;
 }
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin: 20px 0;
+}
+
+.summary-card p {
+    margin: 0;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.category-box {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    margin: 20px 0;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.category-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.category-row:last-child {
+    border-bottom: none;
+}
