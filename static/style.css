@@ -1,59 +1,149 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial;
-    background: #f4f4f4;
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+    color: #1f2937;
 }
 
 .container {
-    width: 300px;
-    margin: 50px auto;
-    padding: 20px;
+    width: 380px;
+    margin: 70px auto;
+    padding: 28px;
     background: white;
-    border-radius: 8px;
+    border-radius: 18px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
 }
 
 .container.wide {
-    width: 800px;
+    width: 1000px;
+}
+
+h1 {
+    margin-top: 0;
+    color: #111827;
+}
+
+h2 {
+    color: #2563eb;
 }
 
 input, button, select {
     width: 100%;
-    margin: 5px 0;
-    padding: 8px;
+    margin: 8px 0;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
 }
 
 button {
-    background: #007BFF;
+    background: #2563eb;
     color: white;
     border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
 }
 
 .btn {
     display: inline-block;
-    margin: 10px 5px;
-    padding: 5px 10px;
-    background: green;
+    padding: 11px 16px;
+    border-radius: 10px;
+    background: #16a34a;
     color: white;
-    text-decoration: none;
 }
 
 .btn.secondary {
-    background: red;
+    background: #dc2626;
 }
 
-.error {
-    color: red;
+.btn.edit {
+    background: #f59e0b;
+}
+
+.summary-card {
+    background: #eff6ff;
+    padding: 18px;
+    border-left: 6px solid #2563eb;
+    border-radius: 14px;
+    margin: 20px 0;
+}
+
+.filter-box {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.filter-box select {
+    flex: 2;
+}
+
+.filter-box button {
+    flex: 1;
 }
 
 table {
     width: 100%;
     margin-top: 20px;
+    border-collapse: collapse;
+    background: white;
+    overflow: hidden;
+    border-radius: 12px;
 }
 
-table, th, td {
-    border: 1px solid #ccc;
-    border-collapse: collapse;
+th {
+    background: #111827;
+    color: white;
 }
 
 th, td {
-    padding: 8px;
+    padding: 13px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+tr:hover {
+    background: #f9fafb;
+}
+
+.error {
+    padding: 10px;
+    border-radius: 10px;
+    color: #991b1b;
+    background: #fee2e2;
+}
+
+.empty-state {
+    padding: 30px;
+    text-align: center;
+    color: #6b7280;
+    background: #f9fafb;
+    border-radius: 14px;
 }
