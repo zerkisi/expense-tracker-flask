@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Expense</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Edit Expense</h1>
+
+    {% for message in get_flashed_messages() %}
+        <p class="error">{{ message }}</p>
+    {% endfor %}
+
+    <form method="POST">
+        <input type="text" name="title" value="{{ expense['title'] }}">
+        <input type="number" step="0.01" name="amount" value="{{ expense['amount'] }}">
+        <input type="text" name="category" value="{{ expense['category'] }}">
+        <input type="date" name="expense_date" value="{{ expense['expense_date'] }}">
+        <input type="text" name="note" value="{{ expense['note'] }}">
+        <button type="submit">Update</button>
+    </form>
+
+    <a href="/dashboard">Back</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+body {
+    font-family: Arial;
+    background: #f4f4f4;
+}
+
+.container {
+    width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+}
+
+.container.wide {
+    width: 800px;
+}
+
+input, button, select {
+    width: 100%;
+    margin: 5px 0;
+    padding: 8px;
+}
+
+button {
+    background: #007BFF;
+    color: white;
+    border: none;
+}
+
+.btn {
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 5px 10px;
+    background: green;
+    color: white;
+    text-decoration: none;
+}
+
+.btn.secondary {
+    background: red;
+}
+
+.error {
+    color: red;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+}

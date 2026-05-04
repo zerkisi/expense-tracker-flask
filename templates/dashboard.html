@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="container wide">
+    <h1>Personal Expense Tracker</h1>
+
+    <p>Welcome, {{ session["username"] }}</p>
+
+    <a class="btn" href="/add">Add Expense</a>
+    <a class="btn secondary" href="/logout">Logout</a>
+
+    <h2>Total Spending: {{ total }} TL</h2>
+
+    <form method="GET" action="/dashboard">
+        <select name="category">
+            <option value="">All Categories</option>
+            {% for c in categories %}
+                <option value="{{ c['category'] }}"
+                    {% if selected_category == c['category'] %}selected{% endif %}>
+                    {{ c['category'] }}
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th>Note</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for expense in expenses %}
+        <tr>
+            <td>{{ expense["title"] }}</td>
+            <td>{{ expense["amount"] }}</td>
+            <td>{{ expense["category"] }}</td>
+            <td>{{ expense["expense_date"] }}</td>
+            <td>{{ expense["note"] }}</td>
+            <td>
+                <a href="/edit/{{ expense['id'] }}">Edit</a>
+                |
+                <a href="/delete/{{ expense['id'] }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>
