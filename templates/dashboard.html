@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard | Expense Tracker</title>
+    <title>Dashboard | FinTrack</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body class="app-body">
@@ -10,7 +10,7 @@
 
     <div class="topbar">
         <div class="brand">
-            <h1>Personal Expense Tracker</h1>
+            <h1>FinTrack Dashboard</h1>
             <p>Welcome, {{ session["username"] }}. Here is your personal spending overview.</p>
         </div>
         <a class="btn secondary" href="/logout">Logout</a>
@@ -31,6 +31,17 @@
             <p>Average Expense</p>
             <h2>{{ "%.2f"|format(average) }} TL</h2>
         </div>
+
+        <div class="summary-card">
+            <p>Highest Expense</p>
+            {% if highest_expense %}
+                <h2>{{ "%.2f"|format(highest_expense["amount"]) }} TL</h2>
+                <small>{{ highest_expense["title"] }}</small>
+            {% else %}
+                <h2>0.00 TL</h2>
+                <small>No data yet</small>
+            {% endif %}
+        </div>
     </div>
 
     <div class="category-box">
@@ -50,6 +61,7 @@
 
     <div class="actions">
         <a class="btn" href="/add">+ Add Expense</a>
+        <a class="btn" href="/export">Export CSV</a>
     </div>
 
     <form class="filter-box" method="GET" action="/dashboard">

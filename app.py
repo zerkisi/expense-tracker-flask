@@ -1,7 +1,16 @@
-from flask import Flask, render_template, request, redirect, session, url_for, flash
+import csv
+import io
+from flask import Flask, render_template, request, redirect, session, url_for, flash, Response
 from werkzeug.security import generate_password_hash, check_password_hash
 from database import get_db, close_db, init_db
-from logic import validate_expense, calculate_total, calculate_average, count_expenses, calculate_category_totals
+from logic import (
+    validate_expense,
+    calculate_total,
+    calculate_average,
+    count_expenses,
+    calculate_category_totals,
+    find_highest_expense,
+)
 
 app = Flask(__name__)
 app.secret_key = "expense-tracker-secret-key"
@@ -30,6 +39,10 @@ def register():
 
         if not username or not password:
             flash("Username and password are required.")
+            return redirect(url_for("register"))
+
+        if len(password) < 4:
+            flash("Password must be at least 4 characters.")
             return redirect(url_for("register"))
 
         db = get_db()
@@ -112,6 +125,7 @@ def dashboard():
     average = calculate_average(expenses)
     expense_count = count_expenses(expenses)
     category_totals = calculate_category_totals(expenses)
+    highest_expense = find_highest_expense(expenses)
 
     categories = db.execute(
         "SELECT DISTINCT category FROM expenses WHERE user_id = ?",
@@ -125,6 +139,7 @@ def dashboard():
         average=average,
         expense_count=expense_count,
         category_totals=category_totals,
+        highest_expense=highest_expense,
         categories=categories,
         selected_category=category,
         search=search,
@@ -221,6 +236,42 @@ def delete_expense(expense_id):
     db.commit()
 
     return redirect(url_for("dashboard"))
+
+
+@app.route("/export")
+def export_expenses():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    db = get_db()
+    expenses = db.execute(
+        """
+        SELECT title, amount, category, expense_date, note
+        FROM expenses
+        WHERE user_id = ?
+        ORDER BY expense_date DESC
+        """,
+        (session["user_id"],),
+    ).fetchall()
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+
+    writer.writerow(["Title", "Amount", "Category", "Date", "Note"])
+
+    for expense in expenses:
+        writer.writerow([
+            expense["title"],
+            expense["amount"],
+            expense["category"],
+            expense["expense_date"],
+            expense["note"],
+        ])
+
+    response = Response(output.getvalue(), mimetype="text/csv")
+    response.headers["Content-Disposition"] = "attachment; filename=expenses.csv"
+
+    return response
 
 
 if __name__ == "__main__":

@@ -45,3 +45,16 @@ def calculate_category_totals(expenses):
         category_totals[category] += amount
 
     return category_totals
+
+
+def find_highest_expense(expenses):
+    if len(expenses) == 0:
+        return None
+
+    highest = expenses[0]
+
+    for exp in expenses:
+        if exp["amount"] > highest["amount"]:
+            highest = exp
+
+    return highest
