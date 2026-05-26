@@ -1,28 +1,13 @@
-function toggleDarkMode() {
-    document.body.classList.toggle("dark-mode");
-
-    if (document.body.classList.contains("dark-mode")) {
-        localStorage.setItem("theme", "dark");
-    } else {
-        localStorage.setItem("theme", "light");
-    }
-}
-
-window.onload = function () {
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-mode");
-    }
-};
-
 function checkPasswordStrength() {
-    const password = document.getElementById("password").value;
+    const passwordInput = document.getElementById("password");
     const bar = document.getElementById("strength-bar");
     const text = document.getElementById("strength-text");
 
-    if (!bar || !text) {
+    if (!passwordInput || !bar || !text) {
         return;
     }
 
+    const password = passwordInput.value;
     let score = 0;
 
     if (password.length >= 8) score++;
