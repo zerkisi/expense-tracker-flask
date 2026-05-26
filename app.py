@@ -324,7 +324,7 @@ def add_expense():
         payment_method = request.form["payment_method"]
         status = request.form["status"]
         is_recurring = 1 if "is_recurring" in request.form else 0
-        note = request.form["note"]
+        note = request.form.get("note", "")
 
         valid, message = validate_expense(title, amount, category)
 
@@ -383,7 +383,7 @@ def edit_expense(expense_id):
         payment_method = request.form["payment_method"]
         status = request.form["status"]
         is_recurring = 1 if "is_recurring" in request.form else 0
-        note = request.form["note"]
+        note = request.form.get("note", "")
 
         valid, message = validate_expense(title, amount, category)
 
