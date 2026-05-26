@@ -106,9 +106,7 @@
         <select name="payment_method">
             <option value="">All Payment Methods</option>
             <option value="Cash" {% if selected_payment_method == "Cash" %}selected{% endif %}>Cash</option>
-            <option value="Credit Card" {% if selected_payment_method == "Credit Card" %}selected{% endif %}>Credit Card</option>
-            <option value="Debit Card" {% if selected_payment_method == "Debit Card" %}selected{% endif %}>Debit Card</option>
-            <option value="Bank Transfer" {% if selected_payment_method == "Bank Transfer" %}selected{% endif %}>Bank Transfer</option>
+            <option value="Card" {% if selected_payment_method == "Card" %}selected{% endif %}>Card</option>
         </select>
 
         <select name="status">
@@ -142,7 +140,7 @@
                 <th>Payment</th>
                 <th>Status</th>
                 <th>Recurring</th>
-                <th>Note</th>
+                
                 <th>Actions</th>
             </tr>
             {% for expense in expenses %}
@@ -154,7 +152,7 @@
                 <td>{{ expense["payment_method"] }}</td>
                 <td>{{ expense["status"] }}</td>
                 <td>{% if expense["is_recurring"] %}Yes{% else %}No{% endif %}</td>
-                <td>{{ expense["note"] }}</td>
+                
                 <td>
                     <a class="btn edit" href="/edit/{{ expense['id'] }}">Edit</a>
                     <a class="btn secondary" href="/delete/{{ expense['id'] }}" onclick="return confirm('Are you sure you want to delete this expense?');">Delete</a>

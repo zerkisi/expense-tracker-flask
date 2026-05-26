@@ -4,8 +4,8 @@ def validate_expense(title, amount, category):
 
     try:
         amount = float(amount)
-        if amount <= 0:
-            return False, "Amount must be greater than 0"
+        if amount < 100:
+            return False, "Amount must be at least 100"
     except:
         return False, "Invalid amount"
 
